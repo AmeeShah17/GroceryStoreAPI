@@ -28,7 +28,7 @@ namespace GroceryStoreAPI.Repository
                 {
                     ProductID=Convert.ToInt32(reader["ProductID"]),
                     ProductName = Convert.ToString(reader["ProductName"]),
-                    ProductImage = Convert.ToString(reader["ProductImage"]),
+                    //ProductImage = Convert.ToString(reader["ProductImage"]),
                     ProductPrice = Convert.ToDecimal(reader["ProductPrice"]),
                     ProductCode=Convert.ToString(reader["ProductCode"]),
                     Description = Convert.ToString(reader["Description"]),

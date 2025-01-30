@@ -7,12 +7,7 @@ namespace GroceryStoreAPI.Validators
     {
         public OrderValidator() 
         {
-            RuleFor(o => o.OrderDate)
-                .NotEmpty().WithMessage("Order Date is required!!!");
-
-            RuleFor(o => o.CustomerID).
-                NotEmpty().WithMessage("Customer ID is required!!!");
-
+           
             RuleFor(o => o.Discount)
                 .NotEmpty().WithMessage("Discount is Riquired");
 

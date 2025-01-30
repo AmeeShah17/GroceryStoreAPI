@@ -110,13 +110,13 @@ namespace GroceryStoreAPI.Repository
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "PR_ORDER_UPDATE";
             command.Parameters.AddWithValue("@OrderID", order.OrderID);
-            command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
+            //command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
             command.Parameters.AddWithValue("@CustomerID", order.CustomerID);
             command.Parameters.AddWithValue("@Discount", order.Discount);
             command.Parameters.AddWithValue("@TotalAmount", order.TotalAmount);
             command.Parameters.AddWithValue("@ShippingAddress", order.ShippingAddress);
             command.Parameters.AddWithValue("@PaymentMode", order.PaymentMode);
-            command.Parameters.Add("@Modified", SqlDbType.DateTime).Value = DBNull.Value;
+            command.Parameters.AddWithValue("@Modified", DateTime.Now);
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }

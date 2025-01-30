@@ -50,7 +50,7 @@ namespace GroceryStoreAPI.Repository
             SqlCommand command = connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "PR_CUSTOMER_SELECTBYPK";
-            command.Parameters.AddWithValue("@CustomerID", customer);
+            command.Parameters.AddWithValue("@CustomerID", CustomerID);
             SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -112,7 +112,7 @@ namespace GroceryStoreAPI.Repository
             SqlCommand command = connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "PR_CUSTOMER_UPDATE";
-            command.Parameters.AddWithValue("@CustomerId", customer.CustomerID);
+            command.Parameters.AddWithValue("@CustomerID", customer.CustomerID);
             command.Parameters.AddWithValue("@CustomerName", customer.CustomerName);
             command.Parameters.AddWithValue("@Email", customer.Email);
             command.Parameters.AddWithValue("@Password", customer.Password);

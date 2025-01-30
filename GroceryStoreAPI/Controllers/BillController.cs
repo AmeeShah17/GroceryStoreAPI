@@ -56,7 +56,7 @@ namespace GroceryStoreAPI.Controllers
             return StatusCode(500, "An error occured during insert");
         }
 
-        [HttpPut("{BillId}")]
+        [HttpPut("{BillID}")]
         public IActionResult Update([FromBody] BillModel bill, int BillID)
         {
             if (bill == null || BillID != bill.BillID)

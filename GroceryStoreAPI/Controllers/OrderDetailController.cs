@@ -31,9 +31,9 @@ namespace GroceryStoreAPI.Controllers
         }
 
         [HttpDelete("{OrderDetailID}")]
-        public IActionResult Delete(int OrderdtailID)
+        public IActionResult Delete(int OrderDetailID)
         {
-            var orderdetail = _orderdetailRepository.OrderDetailDelete(OrderdtailID);
+            var orderdetail = _orderdetailRepository.OrderDetailDelete(OrderDetailID);
             if (!orderdetail)
             {
                 return NotFound();
