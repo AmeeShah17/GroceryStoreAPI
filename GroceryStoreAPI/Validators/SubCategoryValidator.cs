@@ -10,8 +10,7 @@ namespace GroceryStoreAPI.Validators
                 .NotEmpty().WithMessage("Sub Category name is required!!!")
                 .MaximumLength(50).WithMessage("Lenght should be of 50 character");
 
-            RuleFor(s => s.CategoryID)
-                .NotEmpty().WithMessage("Category ID is required!!!");
+           
         }
     }
 }

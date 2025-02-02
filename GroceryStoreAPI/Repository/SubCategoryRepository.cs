@@ -7,12 +7,16 @@ namespace GroceryStoreAPI.Repository
 {
     public class SubCategoryRepository
     {
+        #region Configuration
         private readonly string connectionstring;
 
         public SubCategoryRepository(IConfiguration configuration)
         {
             connectionstring = configuration.GetConnectionString("GroceryStoreAPI");
         }
+        #endregion
+
+        #region Selectall
 
         public IEnumerable<SubCategoryModel> SelectAllSubCategory()
         {
@@ -29,7 +33,6 @@ namespace GroceryStoreAPI.Repository
                 {
                     SubCategoryID = Convert.ToInt32(reader["SubCategoryID"]),
                     SubCategoryName = Convert.ToString(reader["SubCategoryName"]),
-                    SubCategoryImage = Convert.ToString(reader["SubCategoryImage"]),
                     CategoryID = Convert.ToInt32(reader["CategoryID"]),
                     CategoryName = Convert.ToString(reader["CategoryName"]),
                     Created = Convert.ToDateTime(reader["Created"]),
@@ -38,6 +41,9 @@ namespace GroceryStoreAPI.Repository
             }
             return subcategory;
         }
+        #endregion
+
+        #region GetbyID
         public SubCategoryModel GetbyID(int SubCategoryID)
         {
             SubCategoryModel subcategory = null;
@@ -54,7 +60,6 @@ namespace GroceryStoreAPI.Repository
                 {
                     SubCategoryID = Convert.ToInt32(reader["SubCategoryID"]),
                     SubCategoryName = Convert.ToString(reader["SubCategoryName"]),
-                    SubCategoryImage = Convert.ToString(reader["SubCategoryImage"]),
                     CategoryID = Convert.ToInt32(reader["CategoryID"]),
                     CategoryName=Convert.ToString(reader["CategoryName"]),
                     Created = Convert.ToDateTime(reader["Created"]),
@@ -63,6 +68,9 @@ namespace GroceryStoreAPI.Repository
             }
             return subcategory;
         }
+        #endregion
+
+        #region Delete
 
         public bool SubCategoryDelete(int SubCategoryID)
         {
@@ -75,7 +83,9 @@ namespace GroceryStoreAPI.Repository
             var rowaffected = command.ExecuteNonQuery();
             return rowaffected > 0;
         }
+        #endregion
 
+        #region Insert
         public bool SubCategoryInsert(SubCategoryModel subcategory)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -85,12 +95,14 @@ namespace GroceryStoreAPI.Repository
             command.CommandText = "PR_SUBCATEGORY_INSERT";
             command.Parameters.AddWithValue("@CategoryID", subcategory.CategoryID);
             command.Parameters.AddWithValue("@SubCategoryName", subcategory.SubCategoryName);
-            command.Parameters.AddWithValue("@SubCategoryImage", subcategory.SubCategoryImage);
             command.Parameters.AddWithValue("@Created", DateTime.Now);
             command.Parameters.AddWithValue("@Modified", DateTime.Now);
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
+
+        #region Update
 
         public bool SubCategoryUpdate(SubCategoryModel subcategory)
         {
@@ -101,14 +113,16 @@ namespace GroceryStoreAPI.Repository
             command.CommandText = "PR_SUBCATEGORY_UPDATE";
             command.Parameters.AddWithValue("@SubCategoryID", subcategory.SubCategoryID);
             command.Parameters.AddWithValue("@SubCategoryName", subcategory.SubCategoryName);
-            command.Parameters.AddWithValue("@SubCategoryImage", subcategory.SubCategoryImage);
             command.Parameters.AddWithValue("@CategoryID", subcategory.CategoryID);
             command.Parameters.Add("@Modified", SqlDbType.DateTime).Value = DBNull.Value;
 
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
 
+
+        #region CategoryDropDown
         public IEnumerable<CategoryDropDownModel> CategoryDropDown()
         {
             var category = new List<CategoryDropDownModel>();
@@ -129,5 +143,6 @@ namespace GroceryStoreAPI.Repository
             }
             return category;
         }
+        #endregion
     }
 }

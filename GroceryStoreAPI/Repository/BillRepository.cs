@@ -6,13 +6,18 @@ namespace GroceryStoreAPI.Repository
 {
     public class BillRepository
     {
+
+        #region Configration
         private readonly string connectionstring;
 
         public BillRepository(IConfiguration configuration)
         {
             connectionstring = configuration.GetConnectionString("GroceryStoreAPI");
         }
+        #endregion
 
+
+        #region Select ALL
         public IEnumerable<BillModel> SelectAll()
         {
             var bill = new List<BillModel>();
@@ -41,6 +46,9 @@ namespace GroceryStoreAPI.Repository
             }
             return bill;
         }
+        #endregion
+
+        #region GetbyID
 
         public BillModel GetbyID(int BillID)
         {
@@ -71,6 +79,9 @@ namespace GroceryStoreAPI.Repository
             }
             return bill;
         }
+        #endregion
+
+        #region Delete
 
         public bool BillDelete(int BillID)
         {
@@ -83,7 +94,9 @@ namespace GroceryStoreAPI.Repository
             var rowaffected = command.ExecuteNonQuery();
             return rowaffected > 0;
         }
+        #endregion
 
+        #region Insert
         public bool BillInsert(BillModel bill)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -102,7 +115,9 @@ namespace GroceryStoreAPI.Repository
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
 
+        #region Update
         public bool BillUpdate(BillModel bill)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -121,6 +136,10 @@ namespace GroceryStoreAPI.Repository
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
+
+
+        #region OrderDropDown
         public IEnumerable<OrderDropDownModel> OrderDropDown()
         {
             var order = new List<OrderDropDownModel>();
@@ -135,12 +154,16 @@ namespace GroceryStoreAPI.Repository
                 order.Add(new OrderDropDownModel
                 {
                     OrderID = Convert.ToInt32(reader["OrderID"]),
-                    OrderDate = Convert.ToDateTime(reader["OrderDate"]),
+                    OrderInfo = Convert.ToString(reader["OrderInfo"]),
                     
                 });
             }
             return order;
         }
+        #endregion
+
+
+        #region CustomerDropDown
         public IEnumerable<CustomerDropDownModel> CustomerDropDown()
         {
             var customer = new List<CustomerDropDownModel>();
@@ -161,6 +184,7 @@ namespace GroceryStoreAPI.Repository
             }
             return customer;
         }
+        #endregion
     }
 }
 

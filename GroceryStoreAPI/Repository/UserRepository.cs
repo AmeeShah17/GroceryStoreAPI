@@ -6,12 +6,16 @@ namespace GroceryStoreAPI.Repository
 {
     public class UserRepository
     {
+        #region Configuration
         private readonly string connectionstring;
 
         public UserRepository(IConfiguration configuration)
         {
             connectionstring = configuration.GetConnectionString("GroceryStoreAPI");
         }
+        #endregion
+
+        #region Selectall
 
         public IEnumerable<UserModel> SelectAll()
         {
@@ -30,12 +34,16 @@ namespace GroceryStoreAPI.Repository
                     UserName = Convert.ToString(reader["UserName"]),
                     Email = Convert.ToString(reader["Email"]),
                     Password = Convert.ToString(reader["Password"]),
+                    IsActive=Convert.ToBoolean(reader["IsActive"]),
                     Created = Convert.ToDateTime(reader["Created"]),
                     Modified = Convert.ToDateTime(reader["Modified"])
                 });
             }
             return user;
         }
+        #endregion
+
+        #region GetbyID
 
         public UserModel GetbyID(int UserID)
         {
@@ -56,13 +64,16 @@ namespace GroceryStoreAPI.Repository
                     UserName = Convert.ToString(reader["UserName"]),
                     Email = Convert.ToString(reader["Email"]),
                     Password = Convert.ToString(reader["Password"]),
+                    IsActive = Convert.ToBoolean(reader["IsActive"]),
                     Created = Convert.ToDateTime(reader["Created"]),
                     Modified = Convert.ToDateTime(reader["Modified"])
                 };
             }
             return user;
         }
+        #endregion
 
+        #region Delete
         public bool UserDelete(int UserID)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -74,7 +85,7 @@ namespace GroceryStoreAPI.Repository
             var rowaffected = command.ExecuteNonQuery();
             return rowaffected > 0;
         }
-
+        #endregion
         public bool UserInsert(UserModel user)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -85,12 +96,13 @@ namespace GroceryStoreAPI.Repository
             command.Parameters.AddWithValue("@UserName", user.UserName);
             command.Parameters.AddWithValue("@Email", user.Email);
             command.Parameters.AddWithValue("@Password", user.Password);
+            command.Parameters.AddWithValue("@IsActive", user.IsActive);
             command.Parameters.AddWithValue("@Created", DateTime.Now); 
             command.Parameters.AddWithValue("@Modified", DateTime.Now);
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
-
+        #region Update
         public bool UserUpdate(UserModel user)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -102,9 +114,11 @@ namespace GroceryStoreAPI.Repository
             command.Parameters.AddWithValue("@UserName", user.UserName);
             command.Parameters.AddWithValue("@Email", user.Email);
             command.Parameters.AddWithValue("@Password", user.Password);
+            command.Parameters.AddWithValue("@IsActive", user.IsActive);
             command.Parameters.Add("@Modified", SqlDbType.DateTime).Value = DBNull.Value; 
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
     }
 }

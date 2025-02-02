@@ -16,8 +16,9 @@ namespace GroceryStoreAPI.Validators
                 .EmailAddress();
 
             RuleFor(u => u.Password)
-                .NotEmpty().WithMessage("Password is required!!!").
-                MaximumLength(10).WithMessage("Password should contain 10 character");
+                .NotEmpty().WithMessage("Password is required!!!");
+
+           
         }
     }
 }

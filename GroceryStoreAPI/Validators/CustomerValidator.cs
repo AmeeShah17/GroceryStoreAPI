@@ -16,9 +16,8 @@ namespace GroceryStoreAPI.Validators
                 .EmailAddress();
 
             RuleFor(c => c.Password)
-                .NotEmpty().WithMessage("Password is required!!!").
-                MaximumLength(10).WithMessage("Password should contain 10 character");
-
+                .NotEmpty().WithMessage("Password is required!!!");
+               
             RuleFor(c => c.City)
                .NotEmpty().WithMessage("City is required!!!").
                MaximumLength(40).WithMessage("City should contain 40 character");
@@ -34,8 +33,7 @@ namespace GroceryStoreAPI.Validators
             RuleFor(c => c.Address)
                .NotEmpty().WithMessage("Address is required!!!");
 
-            RuleFor(c => c.IsActive)
-               .NotEmpty().WithMessage("Is Active Field is required!!!");  
+            
         }
     }
 }

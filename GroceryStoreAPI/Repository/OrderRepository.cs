@@ -6,13 +6,17 @@ namespace GroceryStoreAPI.Repository
 {
     public class OrderRepository
     {
+        #region Configuration
         private readonly string connectionstring;
 
         public OrderRepository(IConfiguration configuration)
         {
             connectionstring = configuration.GetConnectionString("GroceryStoreAPI");
         }
+        #endregion
 
+
+        #region Select all
         public IEnumerable<OrderModel> SelectAll()
         {
             var order = new List<OrderModel>();
@@ -40,6 +44,9 @@ namespace GroceryStoreAPI.Repository
             }
             return order;
         }
+        #endregion
+
+        #region GetbyID
 
         public OrderModel GetbyID(int OrderID)
         {
@@ -70,7 +77,9 @@ namespace GroceryStoreAPI.Repository
             }
             return order;
         }
+        #endregion
 
+        #region Delete
         public bool OrderDelete(int OrderID)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -82,7 +91,9 @@ namespace GroceryStoreAPI.Repository
             var rowaffected = command.ExecuteNonQuery();
             return rowaffected > 0;
         }
+        #endregion
 
+        #region Insert
         public bool OrderInsert(OrderModel order)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -101,7 +112,9 @@ namespace GroceryStoreAPI.Repository
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
 
+        #region Update
         public bool OrderUpdate(OrderModel order)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -110,7 +123,7 @@ namespace GroceryStoreAPI.Repository
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "PR_ORDER_UPDATE";
             command.Parameters.AddWithValue("@OrderID", order.OrderID);
-            //command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
+            command.Parameters.AddWithValue("@OrderDate", DateTime.Now);
             command.Parameters.AddWithValue("@CustomerID", order.CustomerID);
             command.Parameters.AddWithValue("@Discount", order.Discount);
             command.Parameters.AddWithValue("@TotalAmount", order.TotalAmount);
@@ -120,7 +133,9 @@ namespace GroceryStoreAPI.Repository
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
 
+        #region CustomerDropDown
         public IEnumerable<CustomerDropDownModel> CustomerDropDown()
         {
             var customer = new List<CustomerDropDownModel>();
@@ -141,5 +156,6 @@ namespace GroceryStoreAPI.Repository
             }
             return customer;
         }
+        #endregion
     }
 }

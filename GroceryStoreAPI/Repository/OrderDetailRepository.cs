@@ -6,12 +6,17 @@ namespace GroceryStoreAPI.Repository
 {
     public class OrderDetailRepository
     {
+        #region Configuration
         private readonly string connectionstring;
 
         public OrderDetailRepository(IConfiguration configuration)
         {
             connectionstring = configuration.GetConnectionString("GroceryStoreAPI");
         }
+        #endregion
+
+
+        #region Selectall
 
         public IEnumerable<OrderDetailModel> SelectAll()
         {
@@ -40,6 +45,9 @@ namespace GroceryStoreAPI.Repository
             }
             return orderdetail;
         }
+        #endregion
+
+        #region GetbyID
 
         public OrderDetailModel GetbyID(int OrderDetailID)
         {
@@ -49,8 +57,7 @@ namespace GroceryStoreAPI.Repository
             SqlCommand command = connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "PR_ORDERDETAIL_SELECTBYPK";
-            command.Parameters.AddWithValue("@OderDetailID", OrderDetailID);
-
+            command.Parameters.AddWithValue("@OrderDetailID", OrderDetailID);
             SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -70,6 +77,10 @@ namespace GroceryStoreAPI.Repository
             }
             return orderdetail;
         }
+        #endregion
+
+
+        #region Delete
 
         public bool OrderDetailDelete(int OrderDetailID)
         {
@@ -82,6 +93,10 @@ namespace GroceryStoreAPI.Repository
             var rowaffected = command.ExecuteNonQuery();
             return rowaffected > 0;
         }
+        #endregion
+
+
+        #region Insert
 
         public bool OrderDetailInsert(OrderDetailModel orderDetail)
         {
@@ -100,6 +115,10 @@ namespace GroceryStoreAPI.Repository
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
+
+
+        #region Update
 
         public bool OrderdetailUpdate(OrderDetailModel orderDetail)
         {
@@ -118,6 +137,9 @@ namespace GroceryStoreAPI.Repository
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
+
+        #region OrderDropDown
         public IEnumerable<OrderDropDownModel> OrderDropDown()
         {
             var order = new List<OrderDropDownModel>();
@@ -132,12 +154,15 @@ namespace GroceryStoreAPI.Repository
                 order.Add(new OrderDropDownModel
                 {
                     OrderID = Convert.ToInt32(reader["OrderID"]),
-                    OrderDate = Convert.ToDateTime(reader["OrderDate"]),
-
+                    OrderInfo = Convert.ToString(reader["OrderInfo"]),
                 });
             }
             return order;
         }
+        #endregion
+
+
+        #region CustomerDropDown
         public IEnumerable<CustomerDropDownModel> CustomerDropDown()
         {
             var customer = new List<CustomerDropDownModel>();
@@ -158,5 +183,6 @@ namespace GroceryStoreAPI.Repository
             }
             return customer;
         }
+        #endregion
     }
 }

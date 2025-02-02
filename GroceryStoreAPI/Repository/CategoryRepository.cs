@@ -4,15 +4,20 @@ using System.Data;
 
 namespace GroceryStoreAPI.Repository
 {
+   
     public class CategoryRepository
     {
+        #region Configuration
         private readonly string connectionstring;
 
         public CategoryRepository(IConfiguration configuration)
         {
             connectionstring = configuration.GetConnectionString("GroceryStoreAPI");
         }
+        #endregion
 
+
+        #region Select all
         public IEnumerable<CategoryModel> SelectAll() 
         {
             var category = new List<CategoryModel>();
@@ -28,13 +33,16 @@ namespace GroceryStoreAPI.Repository
                 {
                     CateoryID = Convert.ToInt32(reader["CategoryID"]),
                     CategoryName = Convert.ToString(reader["CategoryName"]),
-                    CategoryImage = Convert.ToString(reader["CategoryImage"]),
                     Created = Convert.ToDateTime(reader["Created"]),
                     Modified = Convert.ToDateTime(reader["Modified"])
                 });
             }
             return category;
         }
+        #endregion
+
+
+        #region SelectbyID
 
         public CategoryModel GetbyID(int CategoryID)
         {
@@ -52,14 +60,16 @@ namespace GroceryStoreAPI.Repository
                 {
                     CateoryID = Convert.ToInt32(reader["CategoryID"]),
                     CategoryName = Convert.ToString(reader["CategoryName"]),
-                    CategoryImage = Convert.ToString(reader["CategoryImage"]),
                     Created = Convert.ToDateTime(reader["Created"]),
                     Modified = Convert.ToDateTime(reader["Modified"])
                 };
             }
             return category;
         }
+        #endregion
 
+
+        #region Delete
         public bool CategoryDelete(int CategoryID)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -71,6 +81,10 @@ namespace GroceryStoreAPI.Repository
             var rowaffected = command.ExecuteNonQuery();
             return rowaffected>0;
         }
+        #endregion
+
+
+        #region Insert
 
         public bool CategoryInsert(CategoryModel category)
         {
@@ -80,12 +94,15 @@ namespace GroceryStoreAPI.Repository
             command.CommandType=CommandType.StoredProcedure;
             command.CommandText = "PR_CATEGORY_INSERT";
             command.Parameters.AddWithValue("@CategoryName", category.CategoryName);
-            command.Parameters.AddWithValue("@CategoryImage", category.CategoryImage);
             command.Parameters.AddWithValue("@Created", DateTime.Now);
             command.Parameters.AddWithValue("@Modified", DateTime.Now);
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
+
+
+        #region Update
 
         public bool CategoryUpdate(CategoryModel category)
         {
@@ -96,11 +113,11 @@ namespace GroceryStoreAPI.Repository
             command.CommandText = "PR_CATEGORY_UPDATE";
             command.Parameters.AddWithValue("@CategoryID", category.CateoryID);
             command.Parameters.AddWithValue("@CategoryName", category.CategoryName);
-            command.Parameters.AddWithValue("@CategoryImage", category.CategoryImage);
             command.Parameters.Add("@Modified", SqlDbType.DateTime).Value = DBNull.Value;
 
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
     }
 }

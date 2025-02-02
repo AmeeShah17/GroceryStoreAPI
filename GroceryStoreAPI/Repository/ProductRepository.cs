@@ -6,13 +6,16 @@ namespace GroceryStoreAPI.Repository
 {
     public class ProductRepository
     {
+        #region configuration
         private readonly string connectionstring;
 
         public ProductRepository(IConfiguration configuration)
         {
             connectionstring = configuration.GetConnectionString("GroceryStoreAPI");
         }
+        #endregion
 
+        #region SelectALL
         public IEnumerable<ProductModel> SelectAll()
         {
             var product = new List<ProductModel>();
@@ -28,7 +31,7 @@ namespace GroceryStoreAPI.Repository
                 {
                     ProductID=Convert.ToInt32(reader["ProductID"]),
                     ProductName = Convert.ToString(reader["ProductName"]),
-                    //ProductImage = Convert.ToString(reader["ProductImage"]),
+                    ProductImage = Convert.ToString(reader["ProductImage"]),
                     ProductPrice = Convert.ToDecimal(reader["ProductPrice"]),
                     ProductCode=Convert.ToString(reader["ProductCode"]),
                     Description = Convert.ToString(reader["Description"]),
@@ -40,7 +43,10 @@ namespace GroceryStoreAPI.Repository
             }
             return product;
         }
+        #endregion
 
+
+        #region GetbyID
         public ProductModel GetbyID(int ProductID)
         {
             ProductModel product = null;
@@ -70,7 +76,9 @@ namespace GroceryStoreAPI.Repository
             }
             return product;
         }
+        #endregion
 
+        #region Delete
         public bool ProductDelete(int ProductID)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -82,7 +90,10 @@ namespace GroceryStoreAPI.Repository
             var rowaffected = command.ExecuteNonQuery();
             return rowaffected > 0;
         }
+        #endregion
 
+
+        #region Insert
         public bool ProductInsert(ProductModel product)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -101,7 +112,10 @@ namespace GroceryStoreAPI.Repository
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
 
+
+        #region Update
         public bool ProductUpdate(ProductModel product)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -120,6 +134,10 @@ namespace GroceryStoreAPI.Repository
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
+
+
+        #region SubCateoryDropDown
 
         public IEnumerable<SubCategoryDropDownModel> SubCategoryDropDown()
         {
@@ -141,5 +159,6 @@ namespace GroceryStoreAPI.Repository
             }
             return subcategory;
         }
+        #endregion
     }
 }

@@ -6,12 +6,17 @@ namespace GroceryStoreAPI.Repository
 {
     public class CustomerRepository
     {
+
+        #region Configuration
         private readonly string connectionstring;
 
         public CustomerRepository(IConfiguration configuration)
         {
             connectionstring = configuration.GetConnectionString("GroceryStoreAPI");
         }
+        #endregion
+
+        #region SelectAll
 
         public IEnumerable<CustomerModel> SelectAll()
         {
@@ -41,6 +46,10 @@ namespace GroceryStoreAPI.Repository
             }
             return customer;
         }
+        #endregion
+
+
+        #region GetbyID
 
         public CustomerModel GetbyID(int CustomerID)
         {
@@ -71,6 +80,9 @@ namespace GroceryStoreAPI.Repository
             }
             return customer;
         }
+        #endregion
+
+        #region delete
 
         public bool CustomerDelete(int CustomerID)
         {
@@ -83,7 +95,9 @@ namespace GroceryStoreAPI.Repository
             var rowaffected = command.ExecuteNonQuery();
             return rowaffected > 0;
         }
+        #endregion
 
+        #region Insert
         public bool CustomerInsert(CustomerModel customer)
         {
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -104,6 +118,9 @@ namespace GroceryStoreAPI.Repository
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
+
+        #region update
 
         public bool CustomerUpdate(CustomerModel customer)
         {
@@ -125,5 +142,6 @@ namespace GroceryStoreAPI.Repository
             int RowAffected = command.ExecuteNonQuery();
             return RowAffected > 0;
         }
+        #endregion
     }
 }

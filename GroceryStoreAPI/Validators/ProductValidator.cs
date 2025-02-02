@@ -23,9 +23,7 @@ namespace GroceryStoreAPI.Validators
             RuleFor(p => p.Description)
                 .NotEmpty().WithMessage("Description is Required!!!");
 
-            RuleFor(p => p.SubCategoryID)
-                .NotEmpty().WithMessage("Sub Category ID is required!!!");
-
+            
         }
     }
 }

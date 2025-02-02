@@ -11,8 +11,8 @@
         public string ProductCode { get; set; }
         public int SubCategoryID { get; set; }
 
-        public string SubCategoryName { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime Modified { get; set; }
+        public string? SubCategoryName { get; set; }
+        public DateTime? Created { get; set; }
+        public DateTime? Modified { get; set; }
     }
 }
