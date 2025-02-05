@@ -15,13 +15,16 @@ namespace GroceryStoreAPI.Controllers
         {
             _orderdetailRepository = orderdetailRepository;
         }
-
+        #region GetAll
         [HttpGet]
         public IActionResult GetAll()
         {
             var orderdetail = _orderdetailRepository.SelectAll();
             return Ok(orderdetail);
         }
+        #endregion
+
+        #region GetbyID
 
         [HttpGet("{OrderDetailID}")]
         public IActionResult GetbyID(int OrderDetailID)
@@ -29,6 +32,9 @@ namespace GroceryStoreAPI.Controllers
             var orderdetail = _orderdetailRepository.GetbyID(OrderDetailID);
             return Ok(orderdetail);
         }
+        #endregion
+
+        #region Delete
 
         [HttpDelete("{OrderDetailID}")]
         public IActionResult Delete(int OrderDetailID)
@@ -40,6 +46,9 @@ namespace GroceryStoreAPI.Controllers
             }
             return NoContent();
         }
+        #endregion
+
+        #region Insert
 
         [HttpPost]
         public IActionResult Add(OrderDetailModel orderDetail)
@@ -55,6 +64,10 @@ namespace GroceryStoreAPI.Controllers
             }
             return StatusCode(500, "An error occured during insert");
         }
+        #endregion
+
+
+        #region Update
 
         [HttpPut("{OrderDetailID}")]
         public IActionResult Update([FromBody] OrderDetailModel orderDetail, int OrderDetailID)
@@ -71,6 +84,9 @@ namespace GroceryStoreAPI.Controllers
             }
             return StatusCode(500, "An error occured during insert");
         }
+        #endregion
+
+        #region OrderDropDown
 
         [HttpGet("Order")]
         public IActionResult OrderDropDown()
@@ -81,6 +97,9 @@ namespace GroceryStoreAPI.Controllers
 
             return Ok(order);
         }
+        #endregion
+
+        #region CustomerDropDown
 
         [HttpGet("Customer")]
         public IActionResult CustomerDropDown()
@@ -91,5 +110,6 @@ namespace GroceryStoreAPI.Controllers
 
             return Ok(customer);
         }
+        #endregion
     }
 }

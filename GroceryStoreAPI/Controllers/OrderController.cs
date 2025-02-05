@@ -15,6 +15,7 @@ namespace GroceryStoreAPI.Controllers
         {
             _orderRepository = orderRepository;
         }
+        #region GetAll
 
         [HttpGet]
         public IActionResult GetAll()
@@ -22,6 +23,9 @@ namespace GroceryStoreAPI.Controllers
             var order = _orderRepository.SelectAll();
             return Ok(order);
         }
+        #endregion
+
+        #region GetbyID
 
         [HttpGet("{OrderID}")]
         public IActionResult GetbyID(int OrderID)
@@ -29,6 +33,9 @@ namespace GroceryStoreAPI.Controllers
             var order = _orderRepository.GetbyID(OrderID);
             return Ok(order);
         }
+        #endregion
+
+        #region Delete
 
         [HttpDelete("{OrderID}")]
         public IActionResult Delete(int OrderID)
@@ -40,6 +47,9 @@ namespace GroceryStoreAPI.Controllers
             }
             return NoContent();
         }
+        #endregion
+
+        #region insert
 
         [HttpPost]
         public IActionResult Add(OrderModel order)
@@ -55,6 +65,10 @@ namespace GroceryStoreAPI.Controllers
             }
             return StatusCode(500, "An error occured during insert");
         }
+        #endregion
+
+
+        #region Update
 
         [HttpPut("{OrderID}")]
         public IActionResult Update([FromBody] OrderModel order, int OrderID)
@@ -71,6 +85,9 @@ namespace GroceryStoreAPI.Controllers
             }
             return StatusCode(500, "An error occured during insert");
         }
+        #endregion
+
+        #region CustomerDropdown
 
         [HttpGet("Customer")]
         public IActionResult CustomerDropDown()
@@ -81,5 +98,6 @@ namespace GroceryStoreAPI.Controllers
 
             return Ok(customer);
         }
+        #endregion
     }
 }

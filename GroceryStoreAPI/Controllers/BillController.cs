@@ -7,6 +7,7 @@ namespace GroceryStoreAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    
     public class BillController : ControllerBase
     {
         private BillRepository _billRepository;
@@ -15,6 +16,7 @@ namespace GroceryStoreAPI.Controllers
         {
             _billRepository = billRepository;
         }
+        #region GetAll
 
         [HttpGet]
         public IActionResult GetAll()
@@ -22,6 +24,9 @@ namespace GroceryStoreAPI.Controllers
             var bill = _billRepository.SelectAll();
             return Ok(bill);
         }
+        #endregion
+
+        #region GetByID
 
         [HttpGet("{BillID}")]
         public IActionResult GetbyID(int BillID)
@@ -29,6 +34,9 @@ namespace GroceryStoreAPI.Controllers
             var bill = _billRepository.GetbyID(BillID);
             return Ok(bill);
         }
+        #endregion
+
+        #region Delete
 
         [HttpDelete("{BillID}")]
         public IActionResult Delete(int BillID)
@@ -40,6 +48,9 @@ namespace GroceryStoreAPI.Controllers
             }
             return NoContent();
         }
+        #endregion
+
+        #region insert
 
         [HttpPost]
         public IActionResult Add(BillModel bill)
@@ -55,6 +66,9 @@ namespace GroceryStoreAPI.Controllers
             }
             return StatusCode(500, "An error occured during insert");
         }
+        #endregion
+
+        #region Update
 
         [HttpPut("{BillID}")]
         public IActionResult Update([FromBody] BillModel bill, int BillID)
@@ -71,6 +85,9 @@ namespace GroceryStoreAPI.Controllers
             }
             return StatusCode(500, "An error occured during insert");
         }
+        #endregion
+
+        #region OrderDropDown
 
         [HttpGet("Order")]
         public IActionResult OrderDropDown()
@@ -82,6 +99,10 @@ namespace GroceryStoreAPI.Controllers
             return Ok(order);
         }
 
+        #endregion
+
+        #region CustomerDropDown
+
         [HttpGet("Customer")]
         public IActionResult CustomerDropDown()
         {
@@ -91,5 +112,6 @@ namespace GroceryStoreAPI.Controllers
 
             return Ok(customer);
         }
+        #endregion
     }
 }

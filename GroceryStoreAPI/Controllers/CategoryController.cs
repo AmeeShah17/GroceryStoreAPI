@@ -15,6 +15,7 @@ namespace GroceryStoreAPI.Controllers
         {
             _categoryRepository = categoryRepository;
         }
+        #region Getall
 
         [HttpGet]
         public IActionResult GetAll()
@@ -22,6 +23,9 @@ namespace GroceryStoreAPI.Controllers
             var category = _categoryRepository.SelectAll();
             return Ok(category);
         }
+        #endregion
+
+        #region GetbyID
 
         [HttpGet("{CategoryID}")]
         public IActionResult GetbyID(int CategoryID)
@@ -29,6 +33,9 @@ namespace GroceryStoreAPI.Controllers
             var category = _categoryRepository.GetbyID(CategoryID);
             return Ok(category);
         }
+        #endregion
+
+        #region Delete
 
         [HttpDelete("{CategoryID}")]
         public IActionResult Delete(int CategoryID)
@@ -40,7 +47,9 @@ namespace GroceryStoreAPI.Controllers
             }
             return NoContent();
         }
+        #endregion
 
+        #region insert
         [HttpPost]
         public IActionResult Add( CategoryModel category)
         {
@@ -55,6 +64,9 @@ namespace GroceryStoreAPI.Controllers
             }
             return StatusCode(500, "An error occured during insert");
         }
+        #endregion
+
+        #region Update
 
         [HttpPut("{CategoryID}")]
         public IActionResult Update([FromBody] CategoryModel category, int CategoryID)
@@ -71,5 +83,6 @@ namespace GroceryStoreAPI.Controllers
             }
             return StatusCode(500, "An error occured during insert");
         }
+        #endregion
     }
 }
