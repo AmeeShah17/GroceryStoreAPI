@@ -160,5 +160,47 @@ namespace GroceryStoreAPI.Repository
             return subcategory;
         }
         #endregion
+
+        #region getProductbySubCategory
+
+        public List<ProductModel> GetProductBySubCategory(int SubCategoryID)
+        {
+            List<ProductModel> products = new List<ProductModel>();
+
+            using (SqlConnection connection = new SqlConnection(connectionstring))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "PR_PRODUCT_GETPRODDUCTBYSUBCATEGORY";
+                    command.Parameters.AddWithValue("@SubCategoryID", SubCategoryID);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            products.Add(new ProductModel
+                            {
+                                ProductID = Convert.ToInt32(reader["ProductID"]),
+                                ProductName = Convert.ToString(reader["ProductName"]),
+                                ProductImage = Convert.ToString(reader["ProductImage"]),
+                                ProductPrice = Convert.ToDecimal(reader["ProductPrice"]),
+                                ProductCode = Convert.ToString(reader["ProductCode"]),
+                                Description = Convert.ToString(reader["Description"]),
+                                SubCategoryID = Convert.ToInt32(reader["SubCategoryID"]),
+                                SubCategoryName = Convert.ToString(reader["SubCategoryName"]),
+                                Created = Convert.ToDateTime(reader["Created"]),
+                                Modified = Convert.ToDateTime(reader["Modified"])
+                            });
+                        }
+                    }
+                }
+            }
+
+            return products;
+        }
+
+        #endregion
     }
 }

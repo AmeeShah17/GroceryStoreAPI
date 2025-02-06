@@ -97,5 +97,23 @@ namespace GroceryStoreAPI.Controllers
             return Ok(category);
         }
         #endregion
+
+        #region GetProductBySubCatgeory
+
+        [HttpGet("{SubCategoryID}")]
+        public IActionResult GetProductsBySubCategory(int SubCategoryID)
+        {
+            if (SubCategoryID <= 0)
+                return BadRequest("Invalid SubCategoryID.");
+
+            var products = _productRepository.GetProductBySubCategory(SubCategoryID);
+
+            if (products == null || !products.Any())
+                return NotFound("No products found for the given SubCategoryID.");
+
+            return Ok(products);
+        }
+
+        #endregion
     }
 }
