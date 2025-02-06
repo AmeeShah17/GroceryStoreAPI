@@ -33,8 +33,6 @@ builder.Services.AddControllers()
         fv.RegisterValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() }));
 
 
-
-
 var app = builder.Build();
 
 
