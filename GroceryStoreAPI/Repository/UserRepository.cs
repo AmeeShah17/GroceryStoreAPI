@@ -120,5 +120,41 @@ namespace GroceryStoreAPI.Repository
             return RowAffected > 0;
         }
         #endregion
+
+        //#region Login
+        //public UserModel Login(UserLoginModel user)
+        //{
+        //    UserModel userData = null;
+        //    using (SqlConnection conn = new SqlConnection(connectionstring))
+        //    {
+        //        SqlCommand cmd = new SqlCommand("PR_User_Login", conn);
+        //        {
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //        }
+        //        cmd.Parameters.AddWithValue("UserName", user.UserName);
+        //        cmd.Parameters.AddWithValue("Password", user.Password);
+        //        conn.Open();
+        //        SqlDataReader reader = cmd.ExecuteReader();
+        //        if (reader.Read())
+        //        {
+        //            userData = new UserModel
+        //            {
+        //                UserID = Convert.ToInt32(reader["UserID"]),
+        //                UserName = reader["UserName"].ToString(),
+        //                Password = reader["Password"].ToString(),
+        //                Email = reader["Email"].ToString(),
+                        
+        //                Created = Convert.ToDateTime(reader["Created"]),
+        //                Modified = Convert.ToDateTime(reader["Modified"])
+        //            };
+        //        }
+        //    }
+        //    return userData;
+
+        //}
+        //#endregion
+
+
+
     }
 }

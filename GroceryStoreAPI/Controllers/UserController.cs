@@ -2,6 +2,10 @@
 using GroceryStoreAPI.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace GroceryStoreAPI.Controllers
 {
@@ -85,6 +89,42 @@ namespace GroceryStoreAPI.Controllers
             return StatusCode(500, "An error occured during insert");
         }
         #endregion
-        
+
+  //      #region User Login
+  //      [HttpPost]
+  //      public IActionResult Login([FromBody] UserLoginModel user)
+  //      {
+  //          var userData = _userRepository.Login(user);
+  //          if (userData != null)
+  //          {
+  //              var claims = new[]
+  //              {
+  //          new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"] ),
+  //          new Claim(JwtRegisteredClaimNames.Jti,  Guid.NewGuid().ToString()),
+		//	//new Claim("UserID", userData.UserID.ToString()),
+		//	//new Claim("UserName", userData.UserName.ToString()),
+		//	//new Claim("Password", userData.Password.ToString()),
+
+		//};
+
+  //              var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+  //              var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+  //              var token = new JwtSecurityToken(
+  //                  _configuration["Jwt:Issuer"],
+  //                  _configuration["Jwt:Audience"],
+  //                  claims,
+  //                  expires: DateTime.UtcNow.AddDays(7),
+  //                  signingCredentials: signIn
+  //                  );
+
+  //              string tockenValue = new JwtSecurityTokenHandler().WriteToken(token);
+  //              return Ok(new { Token = tockenValue, User = userData, Message = "User Login Successfully" });
+  //          }
+
+  //          return BadRequest(new { Message = "Please enter valid Email and password" });
+  //      }
+  //      #endregion
+
+
     }
 }
