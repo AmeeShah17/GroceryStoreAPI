@@ -74,6 +74,22 @@ namespace GroceryStoreAPI.Controllers
             return StatusCode(500, "An error occured during insert");
         }
         #endregion
+        #region Register
+        [HttpPost]
+        public IActionResult Register(UserRegisterModel user)
+        {
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            bool isInserted = _userRepository.UserRegister(user);
+            if (isInserted)
+            {
+                return Ok(new { Message = "User Registered" });
+            }
+            return StatusCode(500, "An error occured during insert");
+        }
+        #endregion
 
         #region Update
 
@@ -105,9 +121,6 @@ namespace GroceryStoreAPI.Controllers
                 {
                      new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"] ),
                         new Claim(JwtRegisteredClaimNames.Jti,  Guid.NewGuid().ToString()),
-			//new Claim("UserID", userData.UserID.ToString()),
-			//new Claim("UserName", userData.UserName.ToString()),
-			//new Claim("Password", userData.Password.ToString()),
 
 		};
 
