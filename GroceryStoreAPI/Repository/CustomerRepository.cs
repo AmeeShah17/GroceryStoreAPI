@@ -192,5 +192,33 @@ namespace GroceryStoreAPI.Repository
             return customerData;
 
         }
+        public CustomerModel GetCustomerProfile(int CustomerID)
+        {
+            CustomerModel customer = null;
+            SqlConnection connection = new SqlConnection(connectionstring);
+            connection.Open();
+            SqlCommand command = connection.CreateCommand();
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = "PR_CUSTOMER_PROFILE";
+            command.Parameters.AddWithValue("@CustomerID", CustomerID);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                customer = new CustomerModel
+                {
+                    CustomerID = Convert.ToInt32(reader["CustomerID"]),
+                    CustomerName = Convert.ToString(reader["CustomerName"]),
+                    Email = Convert.ToString(reader["Email"]),
+                    Password = Convert.ToString(reader["Password"]),
+                    City = Convert.ToString(reader["City"]),
+                    MobileNo = Convert.ToString(reader["MobileNo"]),
+                    Address = Convert.ToString(reader["Address"]),
+                    PinCode = Convert.ToString(reader["Pincode"]),
+                    
+                };
+            }
+            return customer;
+        }
+
     }
 }

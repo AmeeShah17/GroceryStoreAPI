@@ -162,7 +162,29 @@ namespace GroceryStoreAPI.Repository
         }
         #endregion
 
+        public UserModel GetUserProfile(int UserID)
+        {
+            UserModel user = null;
+            SqlConnection connection = new SqlConnection(connectionstring);
+            connection.Open();
+            SqlCommand command = connection.CreateCommand();
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = "PR_USER_PROFILE";
+            command.Parameters.AddWithValue("@UserID", UserID);
 
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                user = new UserModel
+                {
+                    UserName = Convert.ToString(reader["UserName"]),
+                    Email = Convert.ToString(reader["Email"]),
+                    Password = Convert.ToString(reader["Password"]),
+                   
+                };
+            }
+            return user;
+        }
 
     }
 }

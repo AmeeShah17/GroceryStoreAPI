@@ -1,5 +1,6 @@
 ﻿using GroceryStoreAPI.Models;
 using GroceryStoreAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -119,10 +120,11 @@ namespace GroceryStoreAPI.Controllers
             {
                 var claims = new[]
                 {
-                     new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"] ),
-                        new Claim(JwtRegisteredClaimNames.Jti,  Guid.NewGuid().ToString()),
-
-		};
+            new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.NameIdentifier, userData.UserID.ToString()),  // ✅ Add UserID to the token
+            new Claim(ClaimTypes.Email, userData.Email)
+        };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -132,16 +134,36 @@ namespace GroceryStoreAPI.Controllers
                     claims,
                     expires: DateTime.UtcNow.AddDays(7),
                     signingCredentials: signIn
-                    );
+                );
 
-                string tockenValue = new JwtSecurityTokenHandler().WriteToken(token);
-                return Ok(new { Token = tockenValue, User = userData, Message = "User Login Successfully" });
+                string tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
+                return Ok(new { Token = tokenValue, User = userData, Message = "User Login Successfully" });
             }
 
             return BadRequest(new { Message = "Please enter valid Email and password" });
         }
+
         #endregion
 
+        [Authorize]  // Ensure only logged-in customers can access
+        [HttpGet]
+        public IActionResult GetProfile()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized(new { Message = "User ID not found in token" });
+
+             int UserID = Convert.ToInt32(userIdClaim);
+            var user = _userRepository.GetUserProfile(UserID);
+
+            if (user == null)
+            {
+                return NotFound(new { Message = "User not found" });
+            }
+
+            return Ok(user);
+        }
 
     }
 }

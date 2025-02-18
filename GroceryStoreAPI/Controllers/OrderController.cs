@@ -1,7 +1,9 @@
 ﻿using GroceryStoreAPI.Models;
 using GroceryStoreAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GroceryStoreAPI.Controllers
 {
@@ -99,5 +101,8 @@ namespace GroceryStoreAPI.Controllers
             return Ok(customer);
         }
         #endregion
+
     }
+
+
 }

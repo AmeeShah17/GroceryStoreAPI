@@ -1,5 +1,6 @@
 ﻿using GroceryStoreAPI.Models;
 using GroceryStoreAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -121,9 +122,11 @@ namespace GroceryStoreAPI.Controllers
             {
                 var claims = new[]
                 {
-                     new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"] ),
-                        new Claim(JwtRegisteredClaimNames.Jti,  Guid.NewGuid().ToString()),
-
+            new Claim(JwtRegisteredClaimNames.Sub,customerData.CustomerID.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.NameIdentifier, customerData.CustomerID.ToString()),
+            new Claim(ClaimTypes.Name, customerData.CustomerName),
+            new Claim(ClaimTypes.Email, customerData.Email)
         };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -134,14 +137,44 @@ namespace GroceryStoreAPI.Controllers
                     claims,
                     expires: DateTime.UtcNow.AddDays(7),
                     signingCredentials: signIn
-                    );
+                );
 
-                string tockenValue = new JwtSecurityTokenHandler().WriteToken(token);
-                return Ok(new { Token = tockenValue, User = customerData, Message = "Customer Login Successfully" });
+                string tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
+                return Ok(new { Token = tokenValue, Customer = customerData, Message = "Customer Login Successfully" });
             }
 
             return BadRequest(new { Message = "Please enter valid Email and password" });
         }
+
         #endregion
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetProfile()
+        {
+            var identity = User.Identity as ClaimsIdentity;
+            if(identity == null)
+            {
+                return Unauthorized();
+            }
+            var customerIDClaim=identity.FindFirst(ClaimTypes.NameIdentifier);
+            if (customerIDClaim == null)
+            {
+                return Unauthorized();
+            }
+            int customerId=int.Parse(customerIDClaim.Value);
+            
+            var customer = _customerRepository.GetCustomerProfile(customerId);
+
+            //if (customer == null)
+            //{
+            //    return NotFound(new { Message = "Customer not found" });
+            //}
+
+            return Ok(customer);
+        }
+
+
+
     }
 }

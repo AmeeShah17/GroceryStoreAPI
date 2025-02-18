@@ -8,9 +8,7 @@ namespace GroceryStoreAPI.Validators
         public OrderValidator() 
         {
            
-            RuleFor(o => o.Discount)
-                .NotEmpty().WithMessage("Discount is Riquired");
-
+           
             RuleFor(o => o.TotalAmount)
                 .NotEmpty().WithMessage("Total Amount is required!!!")
                 .NotEqual(0).WithMessage("Total amount can not be 0");
