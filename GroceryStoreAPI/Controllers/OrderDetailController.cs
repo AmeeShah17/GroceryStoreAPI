@@ -1,10 +1,12 @@
 ﻿using GroceryStoreAPI.Models;
 using GroceryStoreAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GroceryStoreAPI.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class OrderDetailController : ControllerBase

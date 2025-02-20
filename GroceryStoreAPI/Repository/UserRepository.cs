@@ -177,6 +177,7 @@ namespace GroceryStoreAPI.Repository
             {
                 user = new UserModel
                 {
+                    UserID = Convert.ToInt32(reader["UserID"]),
                     UserName = Convert.ToString(reader["UserName"]),
                     Email = Convert.ToString(reader["Email"]),
                     Password = Convert.ToString(reader["Password"]),

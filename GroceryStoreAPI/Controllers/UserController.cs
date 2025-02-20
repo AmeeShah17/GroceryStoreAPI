@@ -11,6 +11,7 @@ using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredCla
 
 namespace GroceryStoreAPI.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -120,9 +121,10 @@ namespace GroceryStoreAPI.Controllers
             {
                 var claims = new[]
                 {
-            new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
+            new Claim(JwtRegisteredClaimNames.Sub,userData.UserID.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.NameIdentifier, userData.UserID.ToString()),  // ✅ Add UserID to the token
+            new Claim(ClaimTypes.NameIdentifier, userData.UserID.ToString()),
+            new Claim(ClaimTypes.Name,userData.UserName.ToString()),
             new Claim(ClaimTypes.Email, userData.Email)
         };
 
@@ -145,22 +147,25 @@ namespace GroceryStoreAPI.Controllers
 
         #endregion
 
-        [Authorize]  // Ensure only logged-in customers can access
         [HttpGet]
+        [Authorize]
         public IActionResult GetProfile()
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (userIdClaim == null)
-                return Unauthorized(new { Message = "User ID not found in token" });
-
-             int UserID = Convert.ToInt32(userIdClaim);
-            var user = _userRepository.GetUserProfile(UserID);
-
-            if (user == null)
+            var identity = User.Identity as ClaimsIdentity;
+            if (identity == null)
             {
-                return NotFound(new { Message = "User not found" });
+                return Unauthorized();
             }
+            var userIDClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIDClaim == null)
+            {
+                return Unauthorized();
+            }
+            int userid = int.Parse(userIDClaim.Value);
+
+            var user = _userRepository.GetUserProfile(userid);
+
+           
 
             return Ok(user);
         }
