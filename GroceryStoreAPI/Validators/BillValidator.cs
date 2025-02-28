@@ -8,8 +8,7 @@ namespace GroceryStoreAPI.Validators
         public BillValidator() 
         {
             RuleFor(b => b.BillNumber).
-                NotEmpty().WithMessage("Bill Number is required!!!").
-                MaximumLength(10).WithMessage("Bill Number contain 10 character");
+                NotEmpty().WithMessage("Bill Number is required!!!");
 
             RuleFor(b => b.OrderID).
                 NotEmpty().WithMessage("Order ID is required!!!");

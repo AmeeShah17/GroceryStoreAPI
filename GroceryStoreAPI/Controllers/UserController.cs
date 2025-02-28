@@ -11,7 +11,7 @@ using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredCla
 
 namespace GroceryStoreAPI.Controllers
 {
-    //[Authorize]
+   
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -28,6 +28,7 @@ namespace GroceryStoreAPI.Controllers
         #region GetAll
 
         [HttpGet]
+       
         public IActionResult GetAll()
         {
             var user = _userRepository.SelectAll();
@@ -38,6 +39,7 @@ namespace GroceryStoreAPI.Controllers
         #region GetbyID
 
         [HttpGet("{UserID}")]
+   
         public IActionResult GetbyID(int UserID)
         {
             var user = _userRepository.GetbyID(UserID);
@@ -48,6 +50,7 @@ namespace GroceryStoreAPI.Controllers
         #region Delete
 
         [HttpDelete("{UserID}")]
+      
         public IActionResult Delete(int UserID)
         {
             var user = _userRepository.UserDelete(UserID);
@@ -62,6 +65,7 @@ namespace GroceryStoreAPI.Controllers
         #region Insert
 
         [HttpPost]
+  
         public IActionResult Add(UserModel user)
         {
             if (user == null)
@@ -96,6 +100,7 @@ namespace GroceryStoreAPI.Controllers
         #region Update
 
         [HttpPut("{UserID}")]
+
         public IActionResult Update([FromBody] UserModel user, int UserID)
         {
             if (user == null || UserID != user.UserID)

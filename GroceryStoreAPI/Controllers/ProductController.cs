@@ -56,6 +56,21 @@ namespace GroceryStoreAPI.Controllers
         [HttpPost]
         public IActionResult Add(ProductModel product)
         {
+            if (product.ImageFile != null)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages");
+                Directory.CreateDirectory(uploadsFolder);
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    product.ImageFile.CopyTo(fileStream);
+                }
+
+                product.ProductImage = "/ProductImages/" + uniqueFileName; // Return URL instead of Base64
+            }
+
             if (product == null)
             {
                 return BadRequest();

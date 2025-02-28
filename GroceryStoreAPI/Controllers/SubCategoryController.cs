@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GroceryStoreAPI.Controllers
 {
-    //[Authorize]
+   
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class SubCategoryController : ControllerBase
