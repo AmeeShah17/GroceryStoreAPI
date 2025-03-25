@@ -54,7 +54,7 @@ namespace GroceryStoreAPI.Controllers
         #region Insert
 
         [HttpPost]
-        public IActionResult Add(ProductModel product)
+        public IActionResult Add([FromForm] ProductModel product)
         {
             if (product.ImageFile != null)
             {
@@ -68,7 +68,7 @@ namespace GroceryStoreAPI.Controllers
                     product.ImageFile.CopyTo(fileStream);
                 }
 
-                product.ProductImage = "/ProductImages/" + uniqueFileName; // Return URL instead of Base64
+                product.ProductImage = "/ProductImages/" + uniqueFileName; // Store relative path
             }
 
             if (product == null)
@@ -87,8 +87,22 @@ namespace GroceryStoreAPI.Controllers
         #region Update
 
         [HttpPut("{ProductID}")]
-        public IActionResult Update([FromBody] ProductModel product, int ProductID)
+        public IActionResult Update([FromForm] ProductModel product, int ProductID)
         {
+            if (product.ImageFile != null)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages");
+                Directory.CreateDirectory(uploadsFolder);
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    product.ImageFile.CopyTo(fileStream);
+                }
+
+                product.ProductImage = "/ProductImages/" + uniqueFileName; // Store relative path
+            }
             if (product == null || ProductID != product.ProductID)
             {
                 return BadRequest();

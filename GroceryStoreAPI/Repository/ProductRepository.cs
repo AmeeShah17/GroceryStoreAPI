@@ -31,8 +31,8 @@ namespace GroceryStoreAPI.Repository
                 {
                     ProductID=Convert.ToInt32(reader["ProductID"]),
                     ProductName = Convert.ToString(reader["ProductName"]),
-                    ProductImage = Convert.ToString(reader["ProductImage"]),
-                    //ProductImage = reader["ProductImage"] != DBNull.Value ? $"http://localhost:7011{reader["ProductImage"].ToString()}" : null,
+                    //ProductImage = Convert.ToString(reader["ProductImage"]),
+                    ProductImage = reader["ProductImage"] != DBNull.Value ? $"https://localhost:7011{reader["ProductImage"].ToString()}" : null,
                     ProductPrice = Convert.ToDecimal(reader["ProductPrice"]),
                     ProductCode=Convert.ToString(reader["ProductCode"]),
                     Description = Convert.ToString(reader["Description"]),
@@ -65,8 +65,8 @@ namespace GroceryStoreAPI.Repository
                 {
                     ProductID = Convert.ToInt32(reader["ProductID"]),
                     ProductName = Convert.ToString(reader["ProductName"]),
-                    ProductImage = Convert.ToString(reader["ProductImage"]),
-                    //ProductImage = reader["ProductImage"] != DBNull.Value ? $"http://localhost:7011{reader["ProductImage"].ToString()}" : null,
+                    //ProductImage = Convert.ToString(reader["ProductImage"]),
+                    ProductImage = reader["ProductImage"] != DBNull.Value ? $"https://localhost:7011{reader["ProductImage"].ToString()}" : null,
                     ProductPrice = Convert.ToDecimal(reader["ProductPrice"]),
                     ProductCode = Convert.ToString(reader["ProductCode"]),
                     Description = Convert.ToString(reader["Description"]),
@@ -103,25 +103,27 @@ namespace GroceryStoreAPI.Repository
             SqlCommand command = connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "PR_PRODUCT_INSERT";
-            //if (product.ImageFile != null)
-            //{
-            //    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages");
-            //    Directory.CreateDirectory(uploadsFolder); // Ensure directory exists
-            //    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageFile.FileName);
-            //    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            
+            if (product.ImageFile != null)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages");
+                Directory.CreateDirectory(uploadsFolder); 
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-            //    using (var fileStream = new FileStream(filePath, FileMode.Create))
-            //    {
-            //        product.ImageFile.CopyTo(fileStream);
-            //    }
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    product.ImageFile.CopyTo(fileStream);
+                }
 
-            //    product.ProductImage = "/ProductImages/" + uniqueFileName; // Store path instead of Base64
-            //}
+                product.ProductImage = "/ProductImages/" + uniqueFileName; 
+            }
 
 
 
             command.Parameters.AddWithValue("@ProductName", product.ProductName);
-            command.Parameters.AddWithValue("@ProductImage",product.ProductImage); 
+            command.Parameters.AddWithValue("@ProductImage", (object)product.ProductImage ?? DBNull.Value);
+            //command.Parameters.AddWithValue("@ProductImage",product.ProductImage); 
             command.Parameters.AddWithValue("@ProductCode", product.ProductCode);
             command.Parameters.AddWithValue("@ProductPrice", product.ProductPrice);
             command.Parameters.AddWithValue("@Description", product.Description);
@@ -144,13 +146,22 @@ namespace GroceryStoreAPI.Repository
             command.CommandText = "PR_PRODUCT_UPDATE";
             if (product.ImageFile != null)
             {
-                string imagePath = ImageHelper.ConvertImageToBase64(product.ImageFile);
-                product.ProductImage = imagePath;
-            }
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages");
+                Directory.CreateDirectory(uploadsFolder);
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    product.ImageFile.CopyTo(fileStream);
+                }
+
+                product.ProductImage = "/ProductImages/" + uniqueFileName;
+            }
             command.Parameters.AddWithValue("@ProductID", product.ProductID);
             command.Parameters.AddWithValue("@ProductName", product.ProductName);
-            command.Parameters.AddWithValue("@ProductImage", product.ProductImage); 
+            command.Parameters.AddWithValue("@ProductImage", product.ProductImage ?? DBNull.Value.ToString());
+            //command.Parameters.AddWithValue("@ProductImage", product.ProductImage); 
             command.Parameters.AddWithValue("@ProductCode", product.ProductCode);
             command.Parameters.AddWithValue("@ProductPrice", product.ProductPrice);
             command.Parameters.AddWithValue("@Description", product.Description);
@@ -209,7 +220,7 @@ namespace GroceryStoreAPI.Repository
                             {
                                 ProductID = Convert.ToInt32(reader["ProductID"]),
                                 ProductName = Convert.ToString(reader["ProductName"]),
-                                ProductImage = Convert.ToString(reader["ProductImage"]),
+                                ProductImage = reader["ProductImage"] != DBNull.Value ? $"https://localhost:7011{reader["ProductImage"].ToString()}" : null,
                                 ProductPrice = Convert.ToDecimal(reader["ProductPrice"]),
                                 ProductCode = Convert.ToString(reader["ProductCode"]),
                                 Description = Convert.ToString(reader["Description"]),
